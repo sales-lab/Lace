@@ -74,7 +74,7 @@ def Visualise(gene_file):
 	col_dict = {}
 	labs = []
 
-	col2=iter(cm.terrain(np.linspace(0,1,len(transcripts))))
+	col2=iter(cm.viridis(np.linspace(0,1,len(transcripts))))
 	for i,key in enumerate(transcripts):
         	plot_dict[key] = i
         	col_dict[key] = next(col2)
