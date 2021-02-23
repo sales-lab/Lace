@@ -47,13 +47,13 @@ def merge_nodes(lnodes,graph): #Given a list of nodes merge them
             graph.add_edge(lnodes[0],n2)
     
     #Get base sequence for full merge
-    seq = graph.node[lnodes[0]]['Base']
+    seq = graph.nodes[lnodes[0]]['Base']
     for i in range(1,len(lnodes)):
-        seq = seq + graph.node[lnodes[i]]['Base']
+        seq = seq + graph.nodes[lnodes[i]]['Base']
         graph.remove_node(lnodes[i])
 
     #Add full sequence of merged bases to first node
-    graph.node[lnodes[0]]['Base'] = seq
+    graph.nodes[lnodes[0]]['Base'] = seq
     return(lnodes[0]) #Return Node id of merged node
 
 #Given a transcript find its reverse compliment
@@ -328,15 +328,15 @@ def BuildGraph(fname,transcripts,verbose=True,max_edges=100):
             G.add_node(Node_index)
 
             #Add attributes
-            G.node[Node_index]['Base'] = transcripts[key][i]
+            G.nodes[Node_index]['Base'] = transcripts[key][i]
 
             #Add to the reverse dictionary
             reverse_node_dict.append( {key : [i]} )
 
             #Add coordinates
             for k in transcripts:
-                if(k == key): G.node[Node_index][k] = i
-                else: G.node[Node_index][k] = None
+                if(k == key): G.nodes[Node_index][k] = i
+                else: G.nodes[Node_index][k] = None
 
             #Add to dictionary
 
@@ -398,18 +398,19 @@ def BuildGraph(fname,transcripts,verbose=True,max_edges=100):
                     G.add_edge(tnid,n2)                
 
                 #Merge attributes, without overwriting transcript node, first for query node
-                G.node[tnid][qName[i]] = qpos 
-                
+                G.nodes[tnid][qName[i]] = qpos
+
                 #Loop through attributes in query node and add if not none
                 for key in transcripts:
                     if(key == qName[i]):
                         continue
 
                     #Only override transcript attributes if not empty
-                    if(G.node[qnid][key] is not None):
-                        if(key != tName[i]): G.node[tnid][key] = G.node[qnid][key] #Don't replace transcript position
+                    if(G.nodes[qnid][key] is not None):
+                        if(key != tName[i]): G.nodes[tnid][key] = G.nodes[qnid][key] #Don't replace transcript position
                         #Update Dictionary
-                        node_dict[key][G.node[qnid][key]] = tnid
+                        node_dict[key][G.nodes[qnid][key]] = tnid
+
 
 
                         
@@ -495,7 +496,7 @@ def BuildGraph(fname,transcripts,verbose=True,max_edges=100):
 
                         #Find the node with smallest sequence and break there (instead of the highest multiplicty)
             for node in whirl:
-                temp = len(C.node[node]['Base'])
+                temp = len(C.nodes[node]['Base'])
                 if(temp <= Multi):
                     Multi =temp
                     M_node = node
@@ -505,7 +506,7 @@ def BuildGraph(fname,transcripts,verbose=True,max_edges=100):
 
             #Make a copy of node
             C.add_node(Node_index)
-            C.node[Node_index]['Base'] = C.node[iM]['Base']
+            C.nodes[Node_index]['Base'] = C.nodes[iM]['Base']
 
 
             ### Create edges in new node and remove some from old node
@@ -543,8 +544,8 @@ def BuildGraph(fname,transcripts,verbose=True,max_edges=100):
     seq =''
     coord = [0]
     for index in base_order:
-        seq = seq + C.node[index]['Base']
-        coord.append(coord[-1] + len(C.node[index]['Base'])) #0-based co-ordinates
+        seq = seq + C.nodes[index]['Base']
+        coord.append(coord[-1] + len(C.nodes[index]['Base'])) #0-based co-ordinates
 
     #String for annotation file
     anno = ''
