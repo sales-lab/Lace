@@ -55,7 +55,7 @@ def Visualise(gene_file):
 	gff_data = pd.read_table('SuperDuper.gff',sep='\t',header=None)
 
 	#Subset GFF just for gene
-	gff_data = gff_data.loc[gff_data.ix[:,0] == gene,:]
+	gff_data = gff_data.loc[gff_data.iloc[:,0] == gene,:]
 
 	#Make list of transcripts
 	transcripts = np.unique(list(vData['Q name']))
