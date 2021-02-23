@@ -97,8 +97,7 @@ def Visualise(gene_file):
 			left = int(tStarts[block])
 			plt.barh(plot_dict[qName],si,color=col_dict[qName],left=left,alpha=0.7)
 			#Sum up coverage
-			for i in range(left,left+si):
-				coverage[i] = coverage[i] + 1
+			coverage[left:left+si] += 1
 
 	plt.setp(ax1.get_xticklabels(), visible=False)
 
